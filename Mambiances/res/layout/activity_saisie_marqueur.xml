@@ -8,26 +8,47 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".SaisieMarqueur" >
 
-   <TextView
-       android:id="@+id/ result"
-       android:layout_width="wrap_content"
-       android:layout_height="match_parent" />
        
    	<EditText 
         android:id="@+id/mots"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" 
   		android:hint="premier mot, deuxième mot,.."
-  		android:inputType="textCapWords"
+  		android:inputType="textCapSentences"
   		/>
 
-    <Button
-        android:id="@+id/bouton_envoyer"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true"
-        android:background="@drawable/button_custom"
-        android:text="Envoyer" />
+   <TextView
+       android:id="@+id/result"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_below="@+id/mots" />
+      
+   <TextView 
+      android:id="@+id/nomCurseurSaisi"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:textAlignment="viewStart"
+      android:text="@string/nomCurseurAffiche"
+      android:textSize="16sp"
+      android:gravity="center"
+      android:layout_below="@+id/result"/>
+     
+   <SeekBar 
+      android:id="@+id/curseurSaisi"
+      android:progress="@integer/progCurseurSaisi"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:layout_below="@+id/nomCurseurSaisi"/>	        
+  
+
+  <Button
+     android:id="@+id/bouton_envoyer"
+     android:layout_width="fill_parent"
+     android:layout_height="wrap_content"
+     android:layout_alignParentBottom="true"
+     android:layout_centerInParent="true"
+     android:background="@drawable/button_custom"
+     android:text="Envoyer" />
 
 </RelativeLayout>

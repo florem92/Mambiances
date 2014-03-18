@@ -157,6 +157,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
 	public static final String COLUMN_ADRESSEVILLE = "adresse_ville";
 	public static final String COLUMN_ADRESSENUMERORUE = "adresse_numero_rue";
 	public static final String COLUMN_ADRESSECODEPOSTAL = "adresse_code_postal";
+	public static final String COLUMN_ADRESSENOM = "adresse_nom";
 
 	public static final String COLUMN_AMBIANCEMOTID = "amabiancemot_id";
 	public static final String COLUMN_AMBIANCEMOTMOT= "ambiancemot_mot";
@@ -188,15 +189,14 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
 	 * query to create table MARQUEUR
 	 */
 	private static final String 
-				DATABASE_CREATE1 = 		
+				DATABASE_CREATEMARQUEUR = 		
 					"create table "
 					+ TABLE_MARQUEUR + " (" 
 					+ COLUMN_MARQUEURID   + " INTEGER PRIMARY KEY AUTOINCREMENT, "
 					+ COLUMN_MARQUEURDATECREATION + " DATETIME, "
-					+ COLUMN_MARQUEURDATEDERNIEREEDITION + " DATETIME"  
-					+ " FOREIGN KEY( "+ COLUMN_CURSEURID +" ) REFERENCES "+TABLE_CURSEUR+" ( "+COLUMN_CURSEURID+" ),"
-					+ " FOREIGN KEY( "+ COLUMN_IMAGEID +" ) REFERENCES "+TABLE_IMAGE+" ( "+COLUMN_IMAGEID+" ),"
-					+ " FOREIGN KEY( "+ COLUMN_MOTID +" ) REFERENCES "+TABLE_MOT+" ( "+COLUMN_MOTID+" ),"
+					+ COLUMN_MARQUEURDATEDERNIEREEDITION + " DATETIME, "
+					+ COLUMN_PLACESID + " INTEGER, "
+					+ COLUMN_UTILISATEURID + " INTEGER, "
 					+ " FOREIGN KEY( "+ COLUMN_PLACESID +" ) REFERENCES "+TABLE_PLACES+" ( "+COLUMN_PLACESID+" ),"
 					+ " FOREIGN KEY( "+ COLUMN_UTILISATEURID +" ) REFERENCES "+TABLE_UTILISATEUR+" ( "+COLUMN_UTILISATEURID+" )"
 					+"); "
@@ -206,12 +206,14 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
 	 * query to create table CURSEUR
 	 */
 	private static final String 
-				DATABASE_CREATE2 = 		
+				DATABASE_CREATECURSEUR = 		
 					"create table "
 					+ TABLE_CURSEUR + " (" 
 					+ COLUMN_CURSEURID   + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-					+ COLUMN_CURSEURVALEUR + " DOUBLE, " 
-					+ COLUMN_CURSEURNOM + " text not null "
+					+ COLUMN_CURSEURVALEUR + " INTEGER, " 
+					+ COLUMN_CURSEURNOM + " text not null, "
+					+ COLUMN_MARQUEURID + " INTEGER, "
+					+ "FOREIGN KEY( "+ COLUMN_MARQUEURID +" ) REFERENCES "+ TABLE_MARQUEUR+" ( "+COLUMN_MARQUEURID+" )"
 					+"); "
 	;
 	
@@ -219,22 +221,26 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
 	 * query to create table MOT
 	 */
 	private static final String 
-				DATABASE_CREATE3 = 		
+				DATABASE_CREATEMOT = 		
 					"create table "
 					+ TABLE_MOT + " (" 
 					+ COLUMN_MOTID   + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-					+ COLUMN_MOT + " text not null " 
+					+ COLUMN_MOT + " text not null, "
+					+ COLUMN_MARQUEURID + " INTEGER, "
+					+ "FOREIGN KEY( "+ COLUMN_MARQUEURID +" ) REFERENCES "+ TABLE_MARQUEUR+" ( "+COLUMN_MARQUEURID+" )"
 					+"); "
 	;
 	/**
 	 * query to create table IMAGE
 	 */
 	private static final String 
-				DATABASE_CREATE4 = 		
+				DATABASE_CREATEIMAGE = 		
 					"create table "
 					+ TABLE_IMAGE + " (" 
 					+ COLUMN_IMAGEID   + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-					+ COLUMN_IMAGEURL + " text not null " 
+					+ COLUMN_IMAGEURL + " text not null, "
+					+ COLUMN_MARQUEURID + " INTEGER, "
+					+ "FOREIGN KEY( "+ COLUMN_MARQUEURID +" ) REFERENCES "+ TABLE_MARQUEUR+" ( "+COLUMN_MARQUEURID+" )"
 					+"); "
 	;
 	
@@ -242,13 +248,14 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
 	 * query to create table PLACES
 	 */
 	private static final String 
-				DATABASE_CREATE5 = 		
+				DATABASE_CREATEPLACES = 		
 					"create table "
 					+ TABLE_PLACES + " (" 
 					+ COLUMN_PLACESID   + " INTEGER PRIMARY KEY AUTOINCREMENT, "
 					+ COLUMN_PLACESNOM + " text not null, " 
-					+ COLUMN_PLACESLATITUDE + " text not null, " 
-					+ COLUMN_PLACESLONGITUDE + " text not null, " 
+					+ COLUMN_PLACESLATITUDE + " double, " 
+					+ COLUMN_PLACESLONGITUDE + " double, "
+					+ COLUMN_ADRESSEID + " INTEGER, "
 					+ " FOREIGN KEY( "+ COLUMN_ADRESSEID +" ) REFERENCES "+TABLE_ADRESSE+" ( "+COLUMN_ADRESSEID+" )"
 					+"); "
 	;
@@ -257,14 +264,15 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
 	 * query to create table ADRESSE
 	 */
 	private static final String 
-				DATABASE_CREATE6 = 		
+				DATABASE_CREATEADRESSE = 		
 					"create table "
 					+ TABLE_ADRESSE + " (" 
 					+ COLUMN_ADRESSEID   + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-					+ COLUMN_ADRESSERUE + " text not null, " 
+					/*+ COLUMN_ADRESSERUE + " text not null, " 
 					+ COLUMN_ADRESSENUMERORUE + " text not null, " 
 					+ COLUMN_ADRESSEVILLE + " text not null, " 
-					+ COLUMN_ADRESSECODEPOSTAL + " INTEGER " 
+					+ COLUMN_ADRESSECODEPOSTAL + " INTEGER " */
+					+ COLUMN_ADRESSENOM 
 					+"); "
 	;
 	
@@ -272,11 +280,12 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
 	 * query to create table AMBIANCEMOT
 	 */
 	private static final String 
-				DATABASE_CREATE7 = 		
+				DATABASE_CREATEMOTAMB = 		
 					"create table "
 					+ TABLE_AMBIANCEMOT + " (" 
 					+ COLUMN_AMBIANCEMOTID   + " INTEGER PRIMARY KEY AUTOINCREMENT, "
 					+ COLUMN_AMBIANCEMOTMOT + " text not null, " 
+					+ COLUMN_PLACESID + " INTEGER, "
 					+ " FOREIGN KEY( "+ COLUMN_PLACESID +" ) REFERENCES "+TABLE_PLACES+" ( "+COLUMN_PLACESID+" ) "
 					+"); "
 	;
@@ -285,12 +294,13 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
 	 * query to create table AMBIANCECURSEUR
 	 */
 	private static final String 
-				DATABASE_CREATE8 = 		
+				DATABASE_CREATECURSAMB = 		
 					"create table "
 					+ TABLE_AMBIANCECURSEUR + " (" 
 					+ COLUMN_AMBIANCECURSEURID   + " INTEGER PRIMARY KEY AUTOINCREMENT, "
 					+ COLUMN_AMBIANCECURSEURNOM + " text not null, " 
 					+ COLUMN_AMBIANCECURSEURVALEUR + " DOUBLE, "
+					+ COLUMN_PLACESID + " INTEGER, "
 					+ " FOREIGN KEY( "+ COLUMN_PLACESID +" ) REFERENCES "+TABLE_PLACES+" ( "+COLUMN_PLACESID+" ) "
 					+"); "
 	;
@@ -299,7 +309,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
 	 * query to create table UTILISATEUR
 	 */
 	private static final String 
-				DATABASE_CREATE9 = 		
+				DATABASE_CREATEUTILISATEUR = 		
 					"create table "
 					+ TABLE_UTILISATEUR + " (" 
 					+ COLUMN_UTILISATEURID   + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -312,10 +322,11 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
 	 * query to create table PARAMETRES
 	 */
 	private static final String 
-				DATABASE_CREATE10 = 		
+				DATABASE_CREATEPARAMETRES = 		
 					"create table "
 					+ TABLE_PARAMETRES + " (" 
 					+ COLUMN_PARAMETRESID   + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+					+ COLUMN_UTILISATEURID + " INTEGER, "
 					+ " FOREIGN KEY( "+ COLUMN_UTILISATEURID +" ) REFERENCES "+TABLE_UTILISATEUR+" ( "+COLUMN_UTILISATEURID+" ) "
 					+"); "
 	;
@@ -324,13 +335,13 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
 	 * query to create table FAVORIS
 	 */
 	private static final String 
-				DATABASE_CREATE11 = 		
+				DATABASE_CREATEFAVORIS = 		
 					"create table "
 					+ TABLE_FAVORIS + " (" 
 					+ COLUMN_UTILISATEURID + " INTEGER, "
 					+ COLUMN_PLACESID + " INTEGER, "
 					+ COLUMN_FAVORISDATE + " DATETIME, "
-					+" PRIMARY KEY ( "+COLUMN_UTILISATEURID+", "+COLUMN_PLACESID+" ) "
+					+" PRIMARY KEY ( "+COLUMN_UTILISATEURID+", "+COLUMN_PLACESID+" ), "
 					+ " FOREIGN KEY( "+ COLUMN_UTILISATEURID +" ) REFERENCES "+TABLE_UTILISATEUR+" ( "+COLUMN_UTILISATEURID+" ) , "
 					+ " FOREIGN KEY( "+ COLUMN_PLACESID +" ) REFERENCES "+TABLE_PLACES+" ( "+COLUMN_PLACESID+" ) "
 					+"); "
@@ -340,7 +351,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
 	 * query to create table AMIS
 	 */
 	private static final String 
-				DATABASE_CREATE12 = 		
+				DATABASE_CREATEAMIS = 		
 					"create table "
 					+ TABLE_AMIS + " ("
 					+ COLUMN_UTILISATEURID + " INTEGER, "
@@ -403,7 +414,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
 	 * @return the query as String
 	 */
 	public static String getDatabaseCreate1() {
-		return DATABASE_CREATE1;
+		return DATABASE_CREATEUTILISATEUR;
 	}
 	
 	/**
@@ -411,7 +422,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
 	 * @return the query as String
 	 */
 	public static String getDatabaseCreate2() {
-		return DATABASE_CREATE2;
+		return DATABASE_CREATEADRESSE;
 	}
 	
 	/**
@@ -419,7 +430,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
 	 * @return the query as String
 	 */
 	public static String getDatabaseCreate3() {
-		return DATABASE_CREATE3;
+		return DATABASE_CREATEPLACES;
 	}
 	
 	/**
@@ -427,7 +438,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
 	 * @return the query as String
 	 */
 	public static String getDatabaseCreate4() {
-		return DATABASE_CREATE4;
+		return DATABASE_CREATEMARQUEUR;
 	}
 	
 	/**
@@ -435,7 +446,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
 	 * @return the query as String
 	 */
 	public static String getDatabaseCreate5() {
-		return DATABASE_CREATE5;
+		return DATABASE_CREATEMOT;
 	}
 	
 	/**
@@ -443,7 +454,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
 	 * @return the query as String
 	 */
 	public static String getDatabaseCreate6() {
-		return DATABASE_CREATE6;
+		return DATABASE_CREATEIMAGE;
 	}
 	
 	/**
@@ -451,7 +462,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
 	 * @return the query as String
 	 */
 	public static String getDatabaseCreate7() {
-		return DATABASE_CREATE7;
+		return DATABASE_CREATECURSEUR;
 	}
 	
 	/**
@@ -459,7 +470,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
 	 * @return the query as String
 	 */
 	public static String getDatabaseCreate8() {
-		return DATABASE_CREATE8;
+		return DATABASE_CREATEMOTAMB;
 	}
 	
 	/**
@@ -467,7 +478,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
 	 * @return the query as String
 	 */
 	public static String getDatabaseCreate9() {
-		return DATABASE_CREATE9;
+		return DATABASE_CREATECURSAMB;
 	}
 	
 	/**
@@ -475,7 +486,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
 	 * @return the query as String
 	 */
 	public static String getDatabaseCreate10() {
-		return DATABASE_CREATE10;
+		return DATABASE_CREATEAMIS;
 	}
 	
 	/**
@@ -483,7 +494,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
 	 * @return the query as String
 	 */
 	public static String getDatabaseCreate11() {
-		return DATABASE_CREATE11;
+		return DATABASE_CREATEFAVORIS;
 	}
 	
 	/**
@@ -491,7 +502,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
 	 * @return the query as String
 	 */
 	public static String getDatabaseCreate12() {
-		return DATABASE_CREATE12;
+		return DATABASE_CREATEPARAMETRES;
 	}
 
 }

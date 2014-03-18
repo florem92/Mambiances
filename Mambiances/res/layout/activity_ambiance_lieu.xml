@@ -27,8 +27,8 @@
         android:layout_height="wrap_content"
         android:textAlignment="viewStart"
         android:text="@string/nomLieu"
-        android:textSize="24sp"/>"
-    "
+        android:textSize="24sp"/>
+    
     <TextView 
         android:id="@+id/typeLieu"
         android:layout_width="wrap_content"
@@ -106,12 +106,11 @@
 	        
 	        <SeekBar 
 	            android:id="@+id/curseurAffiche"
-	            android:progress="@integer/progCurseurAffiche"
 	            android:layout_width="match_parent"
 	            android:layout_height="match_parent"
 	            android:gravity="center"/>	        
 	        
-	    </LinearLayout>"
+	    </LinearLayout>
     </LinearLayout>
   
     <View

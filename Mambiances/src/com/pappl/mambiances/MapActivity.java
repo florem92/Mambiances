@@ -17,6 +17,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.pappl.mambiances.db.LocalDataSource;
  
 import android.location.Location;
 import android.location.LocationListener;
@@ -61,8 +62,11 @@ public class MapActivity extends Activity implements LocationListener, LoaderCal
 	
 	private MarkerOptions[] places;
 	
+	private String utilisateur;
+	
 	@Override
 	public void onLocationChanged(Location location) {
+		
 	    Log.v("MyMapActivity", "location changed");
 	    locMan = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 		
@@ -178,7 +182,7 @@ public class MapActivity extends Activity implements LocationListener, LoaderCal
 		shopIcon = R.drawable.green_point;
 		otherIcon = R.drawable.purple_point;
 		
-		handleIntent(getIntent());
+		utilisateur = getIntent().getExtras().getString("LOGIN");
 		
 		findViewById(R.id.locButton).setOnClickListener(locButton_OnClickListener);
 		findViewById(R.id.addButton).setOnClickListener(addButton_OnClickListener);
@@ -238,6 +242,7 @@ public class MapActivity extends Activity implements LocationListener, LoaderCal
 			// TODO Auto-generated method stub
 			
 			Intent ListeLieux = new Intent(getApplicationContext(), ListeLieuxActivity.class);
+			ListeLieux.putExtra("LOGIN", utilisateur);
 			startActivity(ListeLieux);
 		}
 	};

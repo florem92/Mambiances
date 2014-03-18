@@ -17,6 +17,8 @@ public class ListeLieuxAdapter<T> extends ArrayAdapter<T> {
 	private final Context context;
 	private int layoutResourceId;
 	private final List<T> lieux;
+	
+	private String utilisateur;
 
 	public ListeLieuxAdapter(Context context, int layoutResourceId, ArrayList<T> lieux) { 
 	super(context, layoutResourceId, lieux); 
@@ -50,10 +52,18 @@ public class ListeLieuxAdapter<T> extends ArrayAdapter<T> {
 	boutonDetailsLieu.setOnClickListener(new View.OnClickListener(){
 		@Override
 		public void onClick(View v) {
-			String ref = lieu.getReference();
-			Intent saisieMarqueur = new Intent(context, SaisieMarqueur.class);
-  	      	saisieMarqueur.putExtra("REFERENCE_LIEU", ref);
-  	      	context.startActivity(saisieMarqueur);
+			double lat = lieu.getLatitude();
+			double lng = lieu.getLongitude();
+			String latStr = String.valueOf(lat);
+			String lngStr = String.valueOf(lng);
+			String utilisateur = lieu.getUtilisateur();
+			
+			Intent ambianceLieu = new Intent(context, AmbianceLieu.class);
+  	      	ambianceLieu.putExtra("LATITUDE", latStr);
+  	        ambianceLieu.putExtra("LONGITUDE", lngStr);
+  	      	ambianceLieu.putExtra("LOGIN", utilisateur);
+  	      	ambianceLieu.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
+  	      	context.startActivity(ambianceLieu);
 		}
 	});
 	
