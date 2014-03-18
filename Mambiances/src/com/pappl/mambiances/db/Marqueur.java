@@ -179,5 +179,17 @@ public class Marqueur extends DAO{
 		public void setUtilisateur_id(long utilisateur_id) {
 			this.utilisateur_id = utilisateur_id;
 		}
+
+		@Override
+		public void saveToLocal(LocalDataSource datasource) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public String toString() {
+			// TODO Auto-generated method stub
+			return null;
+		}
 		
 }

@@ -66,6 +66,8 @@
     <string name="title_activity_saisie_marqueur">Mon Marqueur</string>
     <string name="title_activity_enregistrer">S\'Enregistrer</string>
     <string name="title_activity_connexion">Connexion</string>
+    <string name="title_activity_dashboard">Etat de connexion</string>
+    
     
     
     <string name="logout">Me Déconnecter</string>
