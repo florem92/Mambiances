@@ -122,9 +122,10 @@ public class MapActivity extends Activity implements LocationListener, LoaderCal
 	
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
-		int itemId = item.getItemId();
-		if (itemId == (R.id.action_search)) {
-			onSearchRequested();
+		switch(item.getItemId()){
+			case R.id.action_search:	
+				onSearchRequested();
+				break;
 		}	
 		return super.onMenuItemSelected(featureId, item);
 	}
@@ -271,9 +272,9 @@ public class MapActivity extends Activity implements LocationListener, LoaderCal
 		
 		userMarker = theMap.addMarker( new MarkerOptions()
 		.position(lastLatLng)
-		.title("Vous ï¿½tes ici")
+		.title("Vous êtes ici")
 		.icon(BitmapDescriptorFactory.fromResource(userIcon))
-		.snippet("Votre derniï¿½re localisation"));
+		.snippet("Votre dernière localisation"));
 		
 		
 		new GetPlaces().execute(placesSearchStr);

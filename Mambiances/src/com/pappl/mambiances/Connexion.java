@@ -36,13 +36,13 @@ public class Connexion extends Activity {
 
 		    
 	    /********************************/
-	    /* D��finit le nom de l'Activity */
+	    /* Définit le nom de l'Activity */
 	    /********************************/
 
 	      setTitle("Connexion");
 
 	    /**********************************************************/
-	    /* Importation des caract��ristiques des champs et boutons */
+	    /* Importation des caractéristiques des champs et boutons */
 	    /**********************************************************/
 
 	    inputLogin = (EditText) findViewById(R.id.login);
@@ -52,7 +52,7 @@ public class Connexion extends Activity {
 	    btnLinkToRegister = (Button) findViewById(R.id.btnLinkToRegisterScreen);
 
 	    /***********************************************************************/
-	    /* Restauration des pr��f��rences sauvegard��es si la checkbox est coch��e */
+	    /* Restauration des préférences sauvegardées si la checkbox est cochée */
 	    /***********************************************************************/    
 
 	    SharedPreferences pref = getSharedPreferences(PREFS_NAME,MODE_PRIVATE);  
@@ -73,7 +73,7 @@ public class Connexion extends Activity {
 	      public void onClick(View view) 
 	      {
 	        /************************************************************/
-	        /* Enregistrement des pr��f��rences si la checkbox est coch��e */
+	        /* Enregistrement des préférences si la checkbox est cochée */
 	        /************************************************************/  
 
 	        if(checkBox.isChecked())
@@ -96,7 +96,7 @@ public class Connexion extends Activity {
 	        }
 
 	        /***************************************/
-	        /* On r��cup��re le contenu des EditText */
+	        /* On récupère le contenu des EditText */
 	        /***************************************/  
 
 	        String login = inputLogin.getText().toString();
